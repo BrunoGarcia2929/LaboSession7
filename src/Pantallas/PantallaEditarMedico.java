@@ -19,6 +19,7 @@ public class PantallaEditarMedico extends javax.swing.JFrame {
     private boolean editando = false;
     private Medico medicoActual;
     private DefaultListModel<String> modelo = new DefaultListModel<>();
+    private PantallaListarMedico pantallaPadre;
 
     /**
      * Creates new form PantallaEditarMedico
@@ -27,9 +28,19 @@ public class PantallaEditarMedico extends javax.swing.JFrame {
         initComponents();
         editando = false;
         lstEspe.setModel(modelo);
+        medicoActual = new Medico();
+
     }
 
-    public PantallaEditarMedico(Medico medico) {
+    public PantallaEditarMedico(PantallaListarMedico pantallaPadre) {
+        initComponents();
+        editando = false;
+        lstEspe.setModel(modelo);
+        this.pantallaPadre = pantallaPadre;
+        medicoActual = new Medico();
+    }
+
+    public PantallaEditarMedico(PantallaListarMedico pantallaPadre, Medico medico) {
         initComponents();
         editando = true;
         medicoActual = medico;
@@ -154,7 +165,7 @@ public class PantallaEditarMedico extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
@@ -182,12 +193,21 @@ public class PantallaEditarMedico extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         List<String> especialidadesAGuardar = new ArrayList<>();
-        
-        for (int i = 0; i < modelo.getSize(); i++)
-        {
+
+        for (int i = 0; i < modelo.getSize(); i++) {
             String espec = modelo.getElementAt(i);
             especialidadesAGuardar.add(espec);
         }
+        medicoActual.setNombre(txtNombre.getText());
+        medicoActual.setCPM(txtCMP.getText());
+        medicoActual.setEspecialidades(especialidadesAGuardar);
+        
+        if(!editando)
+        {
+            pantallaPadre.recibirMedico(medicoActual);
+        }
+        this.dispose();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

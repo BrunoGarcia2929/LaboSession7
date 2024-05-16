@@ -10,6 +10,16 @@ package Entidades;
  */
 public class Paciente {
 
+    private String nombre;
+    private String DNI;
+    private String telefono;
+    private int sexo;
+
+    public String getTexto() {
+
+        return "Nombre: " + nombre + " DNI:" + DNI ;
+    }
+
     /**
      * @return the nombre
      */
@@ -65,10 +75,5 @@ public class Paciente {
     public void setSexo(int sexo) {
         this.sexo = sexo;
     }
-
-    private String nombre;
-    private String DNI;
-    private String telefono;
-    private int sexo;
 
 }

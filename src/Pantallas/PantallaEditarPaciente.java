@@ -4,17 +4,60 @@
  */
 package Pantallas;
 
+import Entidades.Medico;
+import Entidades.Paciente;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author Estudiante
  */
 public class PantallaEditarPaciente extends javax.swing.JFrame {
 
+    private boolean editando = false;
+    private Paciente pacienteActual;
+    private DefaultListModel<String> modelo = new DefaultListModel<>();
+    private PantallaListarPaciente pantallaPadre;
+
     /**
      * Creates new form PantallaEditarPaciente
      */
     public PantallaEditarPaciente() {
         initComponents();
+        editando = false;
+        //lstEspe.setModel(modelo);
+        pacienteActual = new Paciente();
+    }
+
+    public PantallaEditarPaciente(PantallaListarPaciente pantallaPadre) {
+        initComponents();
+        editando = false;
+        this.pantallaPadre = pantallaPadre;
+        pacienteActual = new Paciente();
+
+    }
+
+    public PantallaEditarPaciente(PantallaListarPaciente pantallaPadre, Paciente paciente) {
+        initComponents();
+        editando = true;
+        pacienteActual = paciente;
+        //lstEspe.setModel(modelo);
+        setValores(paciente);
+
+    }
+
+    public void setValores(Paciente paciente) {
+        txtNombre.setText(paciente.getNombre());
+        txtDNI.setText(paciente.getDNI());
+        txtTel.setText(paciente.getTelefono());
+        String value;
+        if (paciente.getSexo() == 1) {
+            value = "M";
+        } else {
+            value = "F";
+        }
+        cbSexo.setSelectedItem(value);
+
     }
 
     /**
@@ -61,6 +104,11 @@ public class PantallaEditarPaciente extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(255, 51, 51));
         jButton1.setText("CANCELAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(51, 102, 255));
         jButton2.setText("GUARDAR");
@@ -141,8 +189,25 @@ public class PantallaEditarPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDNIActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        pacienteActual.setNombre(txtNombre.getText());
+        pacienteActual.setDNI(txtDNI.getText());
+        pacienteActual.setTelefono(txtNombre.getText());
+        int valueSex;
+        if (cbSexo.getSelectedItem() == "M") {
+            valueSex = 1;
+        } else {
+            valueSex = 2;
+        }
+        pacienteActual.setSexo(valueSex);
+        if (!editando) {
+            pantallaPadre.recibirPaciente(pacienteActual);
+        }
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

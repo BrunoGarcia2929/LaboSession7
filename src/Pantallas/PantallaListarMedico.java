@@ -4,17 +4,42 @@
  */
 package Pantallas;
 
+import Entidades.Medico;
+import Entidades.Paciente;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import session.pkg7.SESSION7;
+
 /**
  *
  * @author Home
  */
 public class PantallaListarMedico extends javax.swing.JFrame {
 
+    DefaultListModel<String> modelo = new DefaultListModel<>();
+    private PantallaNuevaCita pantallaPadre;
+
     /**
      * Creates new form PantallaEditarMedico
      */
+    public PantallaListarMedico(PantallaNuevaCita pantallaPadre) {
+        initComponents();
+        lstMedico.setModel(modelo);
+        modelo.clear();
+        for (Medico med : SESSION7.medicosGlobal) {
+            modelo.addElement(med.getTexto());
+        }
+        this.pantallaPadre = pantallaPadre;
+    }
+
     public PantallaListarMedico() {
         initComponents();
+        lstMedico.setModel(modelo);
+        modelo.clear();
+        for (Medico medico : SESSION7.medicosGlobal) {
+            modelo.addElement(medico.getTexto());
+        }
     }
 
     /**
@@ -27,24 +52,50 @@ public class PantallaListarMedico extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        lstMedico = new javax.swing.JList<>();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtBuscar = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jScrollPane1.setViewportView(jList1);
+        lstMedico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lstMedicoMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(lstMedico);
 
         jButton2.setBackground(new java.awt.Color(102, 255, 102));
         jButton2.setText("CREAR MEDICO");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("CANCELAR");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel1.setText("Medico");
+
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyReleased(evt);
+            }
+        });
 
         jButton1.setText("Buscar");
 
@@ -64,7 +115,7 @@ public class PantallaListarMedico extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton2))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jTextField1)
+                                .addComponent(txtBuscar)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton1))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -77,7 +128,7 @@ public class PantallaListarMedico extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -90,6 +141,58 @@ public class PantallaListarMedico extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
+        String textoBuscar = txtBuscar.getText();
+        modelo.clear();
+        for (Medico medico : SESSION7.medicosGlobal) {
+            if (medico.getTexto().contains(textoBuscar)) {
+                modelo.addElement(medico.getTexto());
+            }
+        }
+    }//GEN-LAST:event_txtBuscarKeyReleased
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        PantallaEditarMedico editar = new PantallaEditarMedico(this);
+        editar.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void lstMedicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstMedicoMouseClicked
+
+        if (evt.getClickCount() > 1) {
+            int index = lstMedico.getSelectedIndex();
+            Medico med = SESSION7.medicosGlobal.get(index);
+
+            PantallaEditarMedico pan = new PantallaEditarMedico(this, med);
+            pan.setVisible(true);
+
+            modelo.clear();
+
+            for (Medico med1 : SESSION7.medicosGlobal) {
+                modelo.addElement(med1.getTexto());
+            }
+        }
+
+    }//GEN-LAST:event_lstMedicoMouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        pantallaPadre.actualizarListaMedico();
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarActionPerformed
+
+    public void recibirMedico(Medico medico) {
+
+        modelo.clear();
+        SESSION7.medicosGlobal.add(medico);
+
+        for (Medico med : SESSION7.medicosGlobal) {
+            modelo.addElement(med.getTexto());
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -132,8 +235,8 @@ public class PantallaListarMedico extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JList<String> lstMedico;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

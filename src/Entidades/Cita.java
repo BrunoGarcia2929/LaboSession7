@@ -10,6 +10,18 @@ package Entidades;
  */
 public class Cita {
 
+    private Paciente paciente;
+    private Medico medico;
+
+    private String especialidad;
+    private String hora;
+    private String fecha;
+
+    public String getTexto() {
+
+        return "Paciente: " + paciente.getNombre() + " Medico:" + medico.getNombre() + " Fecha: " + fecha + " " + hora;
+    }
+
     /**
      * @return the paciente
      */
@@ -41,6 +53,20 @@ public class Cita {
     /**
      * @return the hora
      */
+    /**
+     * @return the especialidad
+     */
+    public String getEspecialidad() {
+        return especialidad;
+    }
+
+    /**
+     * @param especialidad the especialidad to set
+     */
+    public void setEspecialidad(String especialidad) {
+        this.especialidad = especialidad;
+    }
+
     public String getHora() {
         return hora;
     }
@@ -65,8 +91,5 @@ public class Cita {
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
-    private Paciente paciente;
-    private Medico medico;
-    private String hora;
-    private String fecha;
+
 }

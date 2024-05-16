@@ -13,6 +13,20 @@ public class Medico {
     private String nombre;
     private String CPM;
     private List<String> especialidades;
+    
+    public String getTexto()
+    {
+        String especs = "";
+        if(especialidades!=null)
+        {
+            for(String es: especialidades)
+            {
+                especs += ", "+es;
+            }
+        }
+        
+        return "Nombre: "+nombre + " CMP:" + CPM + " ESP: "+especs;
+    }
     /**
      * @return the nombre
      */
